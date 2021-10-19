@@ -206,6 +206,7 @@ public class MyBatisTest {
             mapper.getEmpByConditionForeachInsert(emps);
             System.out.println("push git");
             System.out.println("你好啊，少年");
+            System.out.println("我很好，谢谢关心");
             openSession.commit();
         }finally {
             openSession.close();
