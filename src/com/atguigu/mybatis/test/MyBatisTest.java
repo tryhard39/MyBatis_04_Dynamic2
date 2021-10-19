@@ -205,6 +205,7 @@ public class MyBatisTest {
             emps.add(new Employee(null,"阿强","2345@qq.com","1",new Department(2)));
             mapper.getEmpByConditionForeachInsert(emps);
             System.out.println("push git");
+            System.out.println("你好啊，少年");
             openSession.commit();
         }finally {
             openSession.close();
