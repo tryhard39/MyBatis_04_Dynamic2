@@ -204,8 +204,6 @@ public class MyBatisTest {
             emps.add(new Employee(null,"阿狸","2345@qq.com","0",new Department(2)));
             emps.add(new Employee(null,"阿强","2345@qq.com","1",new Department(2)));
             mapper.getEmpByConditionForeachInsert(emps);
-            System.out.println("first commit");
-            System.out.println("third commit");
             openSession.commit();
         }finally {
             openSession.close();
