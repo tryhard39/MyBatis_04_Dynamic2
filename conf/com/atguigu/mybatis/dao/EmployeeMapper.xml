@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atguigu.mybatis.dao.EmployeeMapper">
+    <!--
+    namespace:名称空间;指定为接口的全类名,接口与配置文件进行绑定
+    id：唯一标识
+    resultType：返回值类型
+    #{id}：从传递过来的参数中取出id值
+
+    public Employee getEmpById(Integer id);
+     -->
+    <select id="getEmpById" resultType="Emp">
+		select * from tbl_employee where id = #{id} and last_name = #{lastName};
+	</select>
+    <!--public void addEmp(Employee employee);-->
+     <insert id="addEmp" parameterType="com.atguigu.mybatis.dao.EmployeeMapper"
+             useGeneratedKeys="true" keyProperty="id" databaseId="mysql">
+         insert into tbl_employee(last_name,email,gender) values (#{lastName},#{email},#{gender});
+     </insert>
+    <!--public void updateEmp(Employee employee);-->
+    <update id="updateEmp" parameterType="emp">
+        update tbl_employee set last_name = #{lastName},email=#{email} where id=#{id};
+    </update>
+    <!--public void deleteEmpById(Integer id);-->
+    <delete id="deleteEmpById" >
+        delete from tbl_employee where id = #{id};
+    </delete>
+    <!--public Employee getEmpByMap(Map<String,Object> map);-->
+    <select id="getEmpByMap" resultType="emp">
+        select * from tbl_employee where id=#{id} and last_name=#{lastName};
+    </select>
+    <!--public List<Employee> getEmpByLastNameLike(String lastName);-->
+    <select id="getEmpByLastNameLike" resultType="com.atguigu.mybatis.bean.Employee">
+        select * from tbl_employee where last_name like #{lastName};
+    </select>
+    <!--public Map<String,Object> getEmpByIdReturnMap(Integer id);-->
+    <select id="getEmpByIdReturnMap" resultType="map">
+        select * from tbl_employee where id = #{id};
+    </select>
+    <!--public Map<Integer,Employee> getEmpByLastName(String lastName);-->
+    <select id="getEmpByLastName" resultType="emp">
+        select * from tbl_employee where last_name = #{lastName};
+    </select>
+</mapper>

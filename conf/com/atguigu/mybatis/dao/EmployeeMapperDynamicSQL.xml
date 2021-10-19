@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.atguigu.mybatis.dao.EmployeeMapperDynamicSQL">
+    <!--public List<Employee> getEmpsByConditionIf(Employee employee);-->
+    <select id="getEmpsByConditionIf" resultType="com.atguigu.mybatis.bean.Employee">
+      select * from tbl_employee
+      <where>
+       <if test="id != null">
+           id=#{id} and
+       </if>
+       <if test="lastName != null &amp;&amp; lastName != &quot;&quot;">
+         last_name like #{lastName} and
+       </if>
+       <if test="email != null and email.trim() !=&quot;&quot;">
+         email=#{email}  and
+       </if>
+       <if test="gender == 0 or gender == 1">
+            gender=#{gender};
+       </if>
+    </where>
+    </select>
+    <!--public List<Employee> getEmpsByConditionTrim(Employee employee);-->
+    <select id="getEmpsByConditionTrim" resultType="emp">
+        select * from tbl_employee
+        <trim prefix="where" prefixOverrides="and">
+        <if test="id != null">
+            and id=#{id}
+        </if>
+        <if test="lastName != null &amp;&amp; lastName != &quot;&quot;">
+            and last_name like #{lastName}
+        </if>
+        <if test="email != null and email.trim() !=&quot;&quot;">
+            and email=#{email}
+        </if>
+        <if test="gender == 0 or gender == 1">
+            and gender=#{gender};
+        </if>
+    </trim>
+    </select>
+    <!--public void updateEmp(Employee employee);-->
+    <update id="updateEmp" >
+        update tbl_employee
+        <!--<set>-->
+            <!--<if test="lastName!=null">-->
+                <!--last_name=#{lastName},-->
+            <!--</if>-->
+            <!--<if test="email!=null">-->
+                <!--email=#{email},-->
+            <!--</if>-->
+            <!--<if test="gender!=null">-->
+                <!--gender=#{gender}-->
+            <!--</if>-->
+        <!--</set>-->
+        <trim prefix="set" suffixOverrides=",">
+        <if test="lastName!=null">
+            last_name=#{lastName},
+        </if>
+        <if test="email!=null">
+            email=#{email},
+        </if>
+        <if test="gender!=null">
+            gender=#{gender}
+        </if>
+        </trim>
+        where id=#{id}
+    </update>
+    <!--public List<Employee> getEmpByConditionForeach(@Param("ids") List<Integer>ids);-->
+    <!--<select id="getEmpByConditionForeach" resultType="emp">-->
+        <!---->
+    <!--</select>-->
+    <!--public List<Employee> getEmpByConditionForeachInsert(@Param("emps") List<Employee> emps);-->
+    <insert id="getEmpByConditionForeachInsert" >
+        <!--insert into tbl_employee(last_name,email,gender,d_id) values-->
+        <!--<foreach collection="em" item="emp" separator=",">-->
+            <!--(#{emp.lastName},#{emp.email},#{emp.gender},#{emp.dept.id})-->
+        <!--</foreach>-->
+        <foreach collection="em" item="emp" separator=";">
+            insert into tbl_employee(last_name,email,gender,d_id) values
+            (#{emp.lastName},#{emp.email},#{emp.gender},#{emp.dept.id})
+        </foreach>
+    </insert>
+</mapper>

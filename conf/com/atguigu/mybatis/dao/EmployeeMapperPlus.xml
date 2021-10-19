@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atguigu.mybatis.dao.EmployeeMapperPlus">
+    <!--这里就跟setting那个驼峰命名就没关系了-->
+    <resultMap id="MySimpleMap" type="com.atguigu.mybatis.bean.Employee">
+        <id column="id" property="id"/>
+        <result column="last_name" property="lastName"/>
+        <result column="gender" property="gender"/>
+        <result column="email" property="email"/>
+    </resultMap>
+    <!--public Map<String,Object> getEmpById(Integer id);-->
+    <select id="getEmpById" resultMap="MySimpleMap">
+        select * from tbl_employee where id = #{id};
+    </select>
+    <resultMap id="MyDifficultEmp" type="com.atguigu.mybatis.bean.Employee">
+        <id column="id" property="id"></id>
+        <result column="last_name" property="lastName"/>
+        <result column="gender" property="gender"/>
+        <result column="did" property="dept.id"/>
+        <result column="dept_name" property="dept.departmentName"/>
+    </resultMap>
+    <!--public Employee getEmpAndDept(Integer id);-->
+    <select id="getEmpAndDept" resultMap="MyDifficultEmp2">
+        SELECT e.id id,e.last_name last_name,e.gender gender,email email,e.d_id d_id,
+		d.id did,d.dept_name dept_name FROM tbl_employee e,tbl_dept d
+		WHERE e.d_id=d.id AND e.id=#{id}
+    </select>
+    <resultMap id="MyDifficultEmp2" type="com.atguigu.mybatis.bean.Employee">
+        <id column="id" property="id"/>
+        <result column="last_name" property="lastName"/>
+        <result column="gender" property="gender"/>
+        <result column="email" property="email"/>
+        <association property="dept" javaType="com.atguigu.mybatis.bean.Department">
+            <id column="id" property="id"/>
+            <result column="dept_name" property="departmentName"/>
+        </association>
+    </resultMap>
+
+    <!--public Employee getEmpByIdStep(Integer id);-->
+    <select id="getEmpByIdStep" resultMap="MyMap">
+        select * from tbl_employee where id=#{id};
+    </select>
+    <resultMap id="MyMap" type="com.atguigu.mybatis.bean.Employee">
+        <id column="id" property="id"/>
+        <result column="last_name" property="lastName"/>
+        <result column="gender" property="gender"/>
+        <result column="email" property="email"/>
+        <association property="dept" select="com.atguigu.mybatis.dao.DepartmentMapper.getDeptById" column="d_id">
+        </association>
+    </resultMap>
+    <!--public List<Employee> getEmpByDeptId(Integer id);-->
+    <select id="getEmpByDeptId" resultType="emp">
+        select * from tbl_employee where d_id = #{id};
+    </select>
+</mapper>
